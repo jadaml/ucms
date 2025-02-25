@@ -1,0 +1,21 @@
+{
+  "name": "jadaml/ucms",
+  "type": "project",
+  "description": "A simple CMS for PHP with Markdown",
+  "keywords": ["cms", "markdown", "php", "simple", "micro"],
+  "homepage": "https://www.github.com/jadaml/ucms",
+  "license": "GPL-3.0-or-later",
+  "authors": [
+    {
+      "name": "Ádám Juhász",
+      "email": "jadaml@gmail.com",
+      "homepage": "https://jadaml.website/",
+      "role": "Developer"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0",
+    "michelf/php-markdown": "^2.0",
+    "michelf/php-smartypants": "^1.8"
+  }
+}
