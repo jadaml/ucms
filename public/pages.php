@@ -3,6 +3,12 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Michelf\Markdown;
 use Michelf\SmartyPants;
 
+global $trimmer, $replacer, $dater;
+
+$trimmer = "trim";
+$replacer = "str_replace";
+$dater = "gmdate";
+
 function get_special_page(string $specialPage): string {
     switch (strtoupper($specialPage)) {
         case 'ABOUT':
@@ -45,18 +51,39 @@ function get_special_page(string $specialPage): string {
     }
 }
 
-function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRoot, string $page, string $lang, string &$head): string {
+function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRoot, string $page, string $lang, string &$head, ?string $siteTitle): string {
     $qExt = pathinfo($page, PATHINFO_EXTENSION);
     $localFilePath = $docRoot . '/' . $page . ($qExt == 'md' || $qExt == 'markdown' ? '' : '.md');
     if (file_exists($localFilePath)) {
         $fileStat = stat($localFilePath);
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $fileStat['mtime']) . ' GMT');
         $markdown = file_get_contents($localFilePath);
-        // TODO: Populate $head with Open Graph Protocol meta tags
-        $head = '<!-- Open Graph Protocol meta tags -->';
+        $mdLines = explode("\n", $markdown);
+        $description = '';
+        foreach ($mdLines as $line) {
+            if (strlen($line) == 0 && strlen($description) == 0 || substr($line, 0, 1) == '#') continue;
+            elseif (strlen($line) == 0) break;
+            $description .= ' ' . $line;
+        }
+        $pPos = strpos($description, '.');
+        if ($pPos !== false) {
+            $pPos = strpos($description, '.', $pPos + 1);
+            if ($pPos !== false) {
+                $description = substr($description, 0, $pPos + 1);
+            }
+        }
+        $head = '<meta property="og:type" content="article">';
+        $head .= "\n    <meta property=\"og:title\" content=\"{$GLOBALS["trimmer"]($mdLines[0], '\n\r\t\v\0 #')}\">";
+        $head .= "\n    <meta property=\"og:description\" content=\"{$GLOBALS["trimmer"]($description)}\">";
+        $head .= "\n    <meta property=\"og:locale\" content=\"{$GLOBALS["replacer"]('-', '_', $lang)}\">";
+        $head .= "\n    <meta property=\"og:site_name\" content=\"{$siteTitle}\">";
+        $head .= "\n    <meta property=\"article:published_time\" content=\"{$GLOBALS["dater"]('c', $fileStat['ctime'])}\">";
+        $head .= "\n    <meta property=\"article:modified_time\" content=\"{$GLOBALS["dater"]('c', $fileStat['mtime'])}\">";
         return $spParser->transform($mdParser->transform($markdown));
     } else {
-        $head = '';
+        $head = '<meta property="og:type" content="website">';
+        $head .= "\n    <meta property=\"og:locale\" content=\"{$GLOBALS["replacer"]('-', '_', $lang)}\">";
+        $head .= "\n    <meta property=\"og:site_name\" content=\"{$siteTitle}\">";
         http_response_code(404);
         $localErrorPath = $docRoot . '/' . $lang . '/404.md';
         if (file_exists($localErrorPath)) {
@@ -65,7 +92,7 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
         } else {
             return <<<BODY
                 
-                        <h1>Error: The page was not found.</h1>
+                        <h1>The page was not found.</h1>
                         <p>The requested page could not be found on the server. Please check the URL and try again.</p>
                         <p>If you are the owner of this website, please check the file system for the requested page, or create a new page with the name of the requested page.</p>
                     
@@ -74,11 +101,14 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
     }
 }
 
-function get_page(Markdown $mdParser, SmartyPants $spParser, string $docRoot, string $page, string $lang, string &$head): string {
+function get_page(Markdown $mdParser, SmartyPants $spParser, string $docRoot, string $page, string $lang, string &$head, ?string $siteTitle): string {
     if (substr($page, 0, 1) == '*') {
+        $head = '<meta property="og:type" content="website">';
+        $head .= "\n    <meta property=\"og:locale\" content=\"{$GLOBALS["replacer"]('-', '_', $lang)}\">";
+        $head .= "\n    <meta property=\"og:site_name\" content=\"{$siteTitle}\">";
         return get_special_page(substr($page, 1));
     } else {
-        return get_local_page($mdParser, $spParser, $docRoot, $page, $lang, $head);
+        return get_local_page($mdParser, $spParser, $docRoot, $page, $lang, $head, $siteTitle);
     }
 }
 
