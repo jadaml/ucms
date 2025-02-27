@@ -48,7 +48,7 @@ body > * :last-child {
   margin-bottom: 0;
 }
 
-body > nav > ul, body > nav > ol {
+body > nav ul, body > nav ol {
   list-style-type: none;
   padding: 0;
 }
