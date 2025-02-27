@@ -1,3 +1,9 @@
+p {
+  text-align: justify;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+}
+
 p.align-left {
   text-align: left;
 }
