@@ -53,7 +53,7 @@ body > nav ul, body > nav ol {
   padding: 0;
 }
 
-@media screen and (min-width: 811px) {
+@media screen and (min-width: 1001px) {
   p {
     text-align: justify;
   }
@@ -78,9 +78,9 @@ body > nav ul, body > nav ol {
   }
 }
 
-@media screen and (max-width: 810px) {
+@media screen and (max-width: 1000px) {
   body {
-    font-size: calc(13px + (16 - 13) * ((100vw - 300px) / (800 - 300)));
+    font-size: calc(13px + (16 - 13) * ((100vw - 300px) / (1000 - 300)));
   }
 
   body > header, body > footer, body > article, body > nav {
