@@ -33,7 +33,7 @@ function build_nav_list(Markdown $mdParser, SmartyPants $spParser, string $base_
                     $mdFile = fopen($localPath, 'r');
                     $title = fgets($mdFile);
                     fclose($mdFile);
-                    $result .= '<li><a href="' . $base_url. (strlen($subdir) == 0 ? '' : $subdir . '/') . substr($file, 0, -3) . '">' . trim($title, "\n\r\t\v\0#") . '</a></li>';
+                    $result .= '<li><a href="' . $base_url. (strlen($subdir) == 0 ? '' : $subdir . '/') . substr($file, 0, -3) . '">' . trim($title, "\n\r\t\v\0 #") . '</a></li>';
                 }
             }
         } while (count($path) > 0);
