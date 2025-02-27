@@ -1,0 +1,99 @@
+:root {
+  --site-background-color: #dde7f5;
+  --content-background-color: white;
+  --content-radius: 12px;
+  --content-padding: 18px;
+  --content-margin: 18px;
+  --content-shadow-offset: 8px;
+  --content-shadow-radius: 8px;
+  --content-shadow-color: rgba(0, 0, 0, 0.3);
+  --nav-width: 18em;
+  --font-body: "Cambria", serif;
+  --font-header: "Calibri", sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--site-background-color);
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-header);
+}
+
+body > header, body > footer, body > article, body > nav {
+  padding: var(--content-padding);
+  background-color: var(--content-background-color);
+  border-radius: var(--content-radius);
+  box-shadow: var(--content-shadow-offset) var(--content-shadow-offset) var(--content-shadow-radius) var(--content-shadow-color);
+}
+
+body > header {
+  font-size: xx-large;
+  font-weight: bold;
+  font-family: var(--font-header);
+}
+
+body > footer > p {
+  text-align: center;
+}
+
+body > * :first-child {
+  margin-top: 0;
+}
+
+body > * :last-child {
+  margin-bottom: 0;
+}
+
+body > nav > ul, body > nav > ol {
+  list-style-type: none;
+  padding: 0;
+}
+
+@media screen and (min-width: 811px) {
+  p {
+    text-align: justify;
+  }
+
+  body > article {
+    width: calc(100% - var(--nav-width) - var(--content-padding) * 3 - var(--content-margin) * 4);
+  }
+
+  body > header, body > footer, body > article {
+    margin: var(--content-margin);
+  }
+  
+  body > nav {
+    position: relative;
+    right: var(--content-padding);
+    float: right;
+    width: var(--nav-width);
+  }
+
+  body > footer {
+    clear: both;
+  }
+}
+
+@media screen and (max-width: 810px) {
+  body {
+    font-size: calc(13px + (16 - 13) * ((100vw - 300px) / (800 - 300)));
+  }
+
+  body > header, body > footer, body > article, body > nav {
+    margin: var(--content-margin);
+  }
+
+  body > nav > ul {
+    display: flex;
+    justify-content: center;
+  }
+
+  body > nav > ul > li:not(:last-child)::after {
+    content: "|";
+    margin: 0 0.4em;
+  }
+}
