@@ -27,7 +27,7 @@ class RequestLanguage {
     }
 }
 
-function get_request_language(string $docRoot, ?string $defaultLanguage): string {
+function get_request_language(string $docRoot, ?string $page, ?string $defaultLanguage): string {
     $languages = array();
     foreach (explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']) as $language) {
         $languages[] = new RequestLanguage($language);
@@ -40,6 +40,13 @@ function get_request_language(string $docRoot, ?string $defaultLanguage): string
     foreach (scandir($docRoot) as $dir) {
         if (!is_dir($dir)) continue;
         foreach ($languages as $lang) {
+            if ($page !== null) {
+                $pExt = pathinfo($page, PATHINFO_EXTENSION);
+                $localPath = $docRoot . '/' . $dir . '/' . $page . ($pExt == 'md' || $pExt == 'markdown' ? '' : '.md');
+                if (!is_file($localPath)) {
+                    continue;
+                }
+            }
             if ($dir == $lang->getLanguage() || $dir == $lang->getCulture()) {
                 return $dir;
             }
