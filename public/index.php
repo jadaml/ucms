@@ -120,10 +120,11 @@ $BODY = get_page($mdParser, $spParser, $_DOCROOT, $QSTR, $LANG, $_HEAD, $TITLE);
 $_COPYNOTE = isset($COPYNOTE) && strlen($COPYNOTE) > 0 ? '<p>' . $COPYNOTE . '</p>' : '';
 $_COPYNOTE .= '<p>Powered by µCMS &copy; 2025 Ádám Juhász</p>';
 $_TITLE = $TITLE ?? 'Micro Content Management System?';
-$NAV = build_nav_list($mdParser, $spParser, $_DOCROOT, "index.php?", $NAVPAGE);
+$NAV = build_nav_list($mdParser, $spParser, $_DOCROOT, "index.php?", $NAVPAGE ?? null, $LANG);
 
 $needles = array('%LANG%', '<!--%HEAD%-->', '%TITLE%', '%HEADER%', '%NAV%', '%BODY%', '%FOOTER%');
 $values = array($LANG, $_HEAD, $_TITLE, '<p>' . $_TITLE . '</p>', $NAV, $BODY, $_COPYNOTE);
 
 echo str_replace($needles, $values, $template);
+exit;
 ?>
