@@ -32,40 +32,43 @@ include_once __DIR__ . '/utils.php';
 function build_nav_list(Markdown $mdParser, SmartyPants $spParser, string $base_dir, string $base_url, ?string $page): string {
     if (isset($page)) {
         $localPath = $base_dir . '/' . get_file_with_markdown_extension($page);
-        $markdown = file_get_contents($localPath);
-        return $spParser->transform($mdParser->transform($markdown));
-    } else{
-        $path = array();
-        $result = '';
-        $p404 = isset($PAGE404) ? get_file_with_markdown_extension($PAGE404) : '404.md';
-
-        do {
-            if (count($path) > 0) {
-                $subdir = $path[0];
-                $scanPath = $base_dir . '/' . $path[0];
-                $path = array_splice($path, 0, 1);
-            } else {
-                $subdir = '';
-                $scanPath = $base_dir;
-            }
-
-            foreach(scandir($scanPath) as $file) {
-                if ($file[0] == '.') continue;
-                if ($file == $p404) continue;
-                $subpath = strlen($subdir) == 0 ? $file : $subdir . '/' . $file;
-                $localPath = $base_dir . '/' . $subpath;
-                if (is_dir($localPath)) {
-                    array_push($path, $subpath);
-                } elseif (is_file($localPath) && is_markdown_with_extension($localPath)) {
-                    $mdFile = fopen($localPath, 'r');
-                    $title = fgets($mdFile);
-                    fclose($mdFile);
-                    $result .= '<li><a href="' . $base_url. (strlen($subdir) == 0 ? '' : $subdir . '/') . substr($file, 0, -3) . '">' . trim($title, "\n\r\t\v\0 #") . '</a></li>';
-                }
-            }
-        } while (count($path) > 0);
-
-        return '<ul>' . $result . '</ul>';
+        if (file_exists($localPath)) {
+            $markdown = file_get_contents($localPath);
+            return $spParser->transform($mdParser->transform($markdown));
+        } else {
+            error_log('Navigation page not found: ' . $localPath);
+        }
     }
+    $path = array();
+    $result = '';
+    $p404 = isset($PAGE404) ? get_file_with_markdown_extension($PAGE404) : '404.md';
+
+    do {
+        if (count($path) > 0) {
+            $subdir = $path[0];
+            $scanPath = $base_dir . '/' . $path[0];
+            $path = array_splice($path, 0, 1);
+        } else {
+            $subdir = '';
+            $scanPath = $base_dir;
+        }
+
+        foreach(scandir($scanPath) as $file) {
+            if ($file[0] == '.') continue;
+            if ($file == $p404) continue;
+            $subpath = strlen($subdir) == 0 ? $file : $subdir . '/' . $file;
+            $localPath = $base_dir . '/' . $subpath;
+            if (is_dir($localPath)) {
+                array_push($path, $subpath);
+            } elseif (is_file($localPath) && is_markdown_with_extension($localPath)) {
+                $mdFile = fopen($localPath, 'r');
+                $title = fgets($mdFile);
+                fclose($mdFile);
+                $result .= '<li><a href="' . $base_url. (strlen($subdir) == 0 ? '' : $subdir . '/') . substr($file, 0, -3) . '">' . trim($title, "\n\r\t\v\0 #") . '</a></li>';
+            }
+        }
+    } while (count($path) > 0);
+
+    return '<ul>' . $result . '</ul>';
 }
 ?>
