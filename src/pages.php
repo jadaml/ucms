@@ -1,4 +1,18 @@
 <?php
+/*
+ * This file is part of Micro Content Management System.
+ * 
+ * Micro Content Management System is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+ * 
+ * Micro Content Management System is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License along with Micro Content Management System. If not, see <https://www.gnu.org/licenses/>. 
+ */
+/**
+ * @file pages.php
+ * Contains the page rendering functions for Micro Content Management System.
+ */
+
 require_once __DIR__ . '/../vendor/autoload.php';
 use Michelf\Markdown;
 use Michelf\SmartyPants;
@@ -9,6 +23,11 @@ $trimmer = "trim";
 $replacer = "str_replace";
 $dater = "gmdate";
 
+/**
+ * Produces the content of a special, build-in page.
+ * @param string $specialPage The name of the special page.
+ * @return string The content of the special page.
+ */
 function get_special_page(string $specialPage): string {
     switch (strtoupper($specialPage)) {
         case 'ABOUT':
@@ -48,9 +67,22 @@ function get_special_page(string $specialPage): string {
 
                 VERSION;
             break;
+        default:
+            return '';
     }
 }
 
+/**
+ * Renders the requested page from the similarly named markdown file.
+ * @param Markdown $mdParser The markdown parser object.
+ * @param SmartyPants $spParser The SmartyPants parser object.
+ * @param string $docRoot The root directory of the markdown files.
+ * @param string $page The name of the requested page.
+ * @param string $lang The preferred language of the page.
+ * @param string $head Additional content for the HTML head tag, like Open Graph protocol metadata.
+ * @param string|null $siteTitle The title of the site.
+ * @return string The content of the requested page.
+ */
 function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRoot, string $page, string $lang, string &$head, ?string $siteTitle): string {
     $qExt = pathinfo($page, PATHINFO_EXTENSION);
     $localFilePath = $docRoot . '/' . $page . ($qExt == 'md' || $qExt == 'markdown' ? '' : '.md');
@@ -101,6 +133,17 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
     }
 }
 
+/**
+ * Renders the requested special, or user page.
+ * @param Markdown $mdParser The markdown parser object.
+ * @param SmartyPants $spParser The SmartyPants parser object.
+ * @param string $docRoot The root directory of the markdown files.
+ * @param string $page The name of the requested page.
+ * @param string $lang The preferred language of the page.
+ * @param string $head Additional content for the HTML head tag, like Open Graph protocol metadata.
+ * @param string|null $siteTitle The title of the site.
+ * @return string The content of the requested page.
+ */
 function get_page(Markdown $mdParser, SmartyPants $spParser, string $docRoot, string $page, string $lang, string &$head, ?string $siteTitle): string {
     if (substr($page, 0, 1) == '*') {
         $head = '<meta property="og:type" content="website">';
