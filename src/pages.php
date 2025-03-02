@@ -118,7 +118,11 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
         $head .= "\n    <meta property=\"og:locale\" content=\"{$GLOBALS["replacer"]('-', '_', $lang)}\">";
         $head .= "\n    <meta property=\"og:site_name\" content=\"{$siteTitle}\">";
         http_response_code(404);
-        $localErrorPath = $docRoot . '/' . $lang . '/404.md';
+        if (isset($PAGE404)) {
+            $localErrorPath = $docRoot . '/' . get_file_with_markdown_extension($PAGE404);
+        } else {
+            $localErrorPath = $docRoot . '/' . '/404.md';
+        }
         if (file_exists($localErrorPath)) {
             $markdown = file_get_contents($localErrorPath);
             return $spParser->transform($mdParser->transform($markdown));

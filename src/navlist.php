@@ -17,6 +17,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Michelf\Markdown;
 use Michelf\SmartyPants;
 
+include_once __DIR__ . '../config/umcs.php';
 include_once __DIR__ . '/utils.php';
 
 /**
@@ -36,6 +37,7 @@ function build_nav_list(Markdown $mdParser, SmartyPants $spParser, string $base_
     } else{
         $path = array();
         $result = '';
+        $p404 = isset($PAGE404) ? get_file_with_markdown_extension($PAGE404) : '404.md';
 
         do {
             if (count($path) > 0) {
@@ -49,6 +51,7 @@ function build_nav_list(Markdown $mdParser, SmartyPants $spParser, string $base_
 
             foreach(scandir($scanPath) as $file) {
                 if ($file[0] == '.') continue;
+                if ($file == $p404) continue;
                 $subpath = strlen($subdir) == 0 ? $file : $subdir . '/' . $file;
                 $localPath = $base_dir . '/' . $subpath;
                 if (is_dir($localPath)) {

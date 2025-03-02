@@ -6,6 +6,7 @@
 //$DOCROOT = '';
   $MAINPAGE = 'main';
 //$NAVPAGE = 'nav';
+//$PAGE404 = '404';
 //////////////// Markdown Configuration ////////////////
 //$TAB_WIDTH=4;
 //$HARD_WRAP=false;
