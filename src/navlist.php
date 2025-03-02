@@ -41,7 +41,7 @@ function build_nav_list(Markdown $mdParser, SmartyPants $spParser, string $base_
     }
     $path = array();
     $result = '';
-    $p404 = isset($PAGE404) ? get_file_with_markdown_extension($PAGE404) : '404.md';
+    $p404 = isset($ERRPAGE) ? get_file_with_markdown_extension($ERRPAGE) : 'err.md';
 
     do {
         if (count($path) > 0) {
