@@ -1,6 +1,4 @@
 :root {
-  --site-background-color: #dde7f5;
-  --content-background-color: white;
   --content-radius: 12px;
   --content-padding: 18px;
   --content-margin: 18px;
@@ -10,6 +8,30 @@
   --nav-width: 18em;
   --font-body: "Cambria", serif;
   --font-header: "Calibri", sans-serif;
+}
+
+@media(prefers-color-scheme:light) {
+  :root {
+    --site-background-color: #dde7f5;
+    --content-background-color: white;
+    --content-foreground-color: black;
+  }
+}
+
+@media(prefers-color-scheme:dark) {
+  :root {
+    --site-background-color: #112849;
+    --content-background-color: #202228;
+    --content-foreground-color: white;
+  }
+
+  a {
+    color: light  skyblue;
+  }
+
+  a:visited {
+    color: orchid;
+  }
 }
 
 body {
@@ -25,6 +47,7 @@ h1, h2, h3, h4, h5, h6 {
 
 body > header, body > footer, body > article, body > nav {
   padding: var(--content-padding);
+  color: var(--content-foreground-color);
   background-color: var(--content-background-color);
   border-radius: var(--content-radius);
   box-shadow: var(--content-shadow-offset) var(--content-shadow-offset) var(--content-shadow-radius) var(--content-shadow-color);
