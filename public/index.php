@@ -16,18 +16,24 @@
  * @date 2025
  */
 
-require_once __DIR__ . '/../vendor/autoload.php';
-use Michelf\MarkdownExtra;
-use Michelf\SmartyPantsTypographer;
-
 include_once __DIR__ . '/../config/umcs.php';
 include_once __DIR__ . '/../src/langs.php';
+
+$_PAGE = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+$_DOCROOT = (isset($DOCROOT) && strlen($DOCROOT) > 0) ? __DIR__ . '/' . $DOCROOT : __DIR__;
+
+$matches = array();
+if (preg_match('/^([a-zA-Z]{2}(-[a-zA-Z]{2})?)\//', $_PAGE, $matches, PREG_UNMATCHED_AS_NULL) === 1)
+{
+    $LANG = $matches[1];
+} else {
+    $LANG = get_request_language($_DOCROOT, $_PAGE, $DEFLANG);
+}
+$_DOCROOT .= '/' . $LANG;
+
 include_once __DIR__ . '/../src/md_sp.php';
 include_once __DIR__ . '/../src/navlist.php';
 include_once __DIR__ . '/../src/pages.php';
-
-$_PAGE = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-$_DOCROOT = (isset($DOCROOT) && strlen($DOCROOT) > 0) ? __DIR__ . '/' . $DOCROOT : __DIR__ . '/' . $LANG;
 
 $template = file_get_contents(__DIR__ . '/../resources/template.html');
 

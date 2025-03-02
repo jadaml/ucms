@@ -97,12 +97,4 @@ function get_request_language(string $docRoot, ?string $page, ?string $defaultLa
     return $defaultLanguage ?? 'en';
 }
 
-$matches = array();
-if (preg_match('/^([a-zA-Z]{2}(-[a-zA-Z]{2})?)\//', $QSTR, $matches, PREG_UNMATCHED_AS_NULL) === 1)
-{
-    $LANG = $matches[1];
-} else {
-    $LANG = get_request_language($_DOCROOT, $QSTR, $DEFLANG);
-}
-
 ?>
