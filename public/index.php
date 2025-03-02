@@ -20,10 +20,10 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Michelf\MarkdownExtra;
 use Michelf\SmartyPantsTypographer;
 
-include __DIR__ . '/../config/umcs.php';
-include __DIR__ . '/../src/navlist.php';
-include __DIR__ . '/../src/pages.php';
-include __DIR__ . '/../src/langs.php';
+include_once __DIR__ . '/../config/umcs.php';
+include_once __DIR__ . '/../src/navlist.php';
+include_once __DIR__ . '/../src/pages.php';
+include_once __DIR__ . '/../src/langs.php';
 
 $QSTR = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
 $_DOCROOT = isset($DOCROOT) ? __DIR__ . '/' . $DOCROOT : __DIR__;
