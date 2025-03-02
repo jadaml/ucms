@@ -17,7 +17,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Michelf\Markdown;
 use Michelf\SmartyPants;
 
-include_once __DIR__ . '../config/umcs.php';
+include_once __DIR__ . '/../config/umcs.php';
 include_once __DIR__ . '/utils.php';
 
 /**

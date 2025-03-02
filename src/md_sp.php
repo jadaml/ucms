@@ -16,7 +16,7 @@
 require_once __DIR__ . '/../vendor/autoload.php';
 use Michelf\MarkdownExtra;
 use Michelf\SmartyPantsTypographer;
-include_once __DIR__ . '../config/umcs.php';
+include_once __DIR__ . '/../config/umcs.php';
 
 $mdParser = new MarkdownExtra;
 if (isset($TAB_WIDTH)               && is_int($TAB_WIDTH))                    $mdParser->tab_width               = $TAB_WIDTH;
