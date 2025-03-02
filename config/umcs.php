@@ -25,7 +25,7 @@
   $CODE_CLASS_PREFIX='language-';
 //$CODE_ATTR_ON_PRE=false;
 //$TABLE_ALIGN_CLASS_TMPL='align-%%';
-  $PREDEF_ABBR=array('CMS' => 'Content Management System', 'µCMS' => 'Micro Content Management System');
+  $PREDEF_ABBR=array('CMS' => 'Content Management System', 'µCMS' => 'Micro Content Management System', 'CC' => 'Creative Commons');
 //$HASHTAG_PROTECTION=false;
 //////////////// SmartyPants Configuration ////////////////
 //$TAGS_TO_SKIP = 'pre|code|kbd|script|style|math';
