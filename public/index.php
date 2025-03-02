@@ -25,6 +25,28 @@ include __DIR__ . '/../src/navlist.php';
 include __DIR__ . '/../src/pages.php';
 include __DIR__ . '/../src/langs.php';
 
+$QSTR = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+$_DOCROOT = isset($DOCROOT) ? __DIR__ . '/' . $DOCROOT : __DIR__;
+
+$matches = array();
+if (preg_match('/^([a-zA-Z]{2}(-[a-zA-Z]{2})?)\//', $QSTR, $matches, PREG_UNMATCHED_AS_NULL) === 1)
+{
+    $LANG = $matches[1];
+} else {
+    $LANG = get_request_language($_DOCROOT, $QSTR, $DEFLANG);
+}
+$_DOCROOT .= '/' . $LANG;
+
+$template = file_get_contents(__DIR__ . '/../resources/template.html');
+
+if ($template === false) {
+    $template = '<!DOCTYPE html><html lang="%LANG%"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>%TITLE%</title><!--%HEAD%---></head><body><p><strong>ERROR</strong> template.html could not be read.</p><header>%HEADER%</header><nav>%NAV%</nav><article>%BODY%</article><footer>%FOOTER%</footer></body></html>';
+}
+
+if (strlen($QSTR) == 0) {
+    $QSTR = $MAINPAGE ?? 'main';
+}
+
 $mdParser = new MarkdownExtra;
 if (isset($TAB_WIDTH) && is_int($TAB_WIDTH)) $mdParser->tab_width = $TAB_WIDTH;
 if (isset($HARD_WRAP) && is_bool($HARD_WRAP)) $mdParser->hard_wrap = $HARD_WRAP;
@@ -91,28 +113,6 @@ if(isset($SPACE_FRENCHQUOTE) && is_string($SPACE_FRENCHQUOTE)) $spParser->space_
 if(isset($SPACE_THOUSANDS) && is_string($SPACE_THOUSANDS)) $spParser->space_thousand = $SPACE_THOUSANDS;
 if(isset($SPACE_UNIT) && is_int($SPACE_UNIT)) $spParser->space_unit = $SPACE_UNIT;
 if(isset($SPACE) && is_int($SPACE)) $spParser->space = $SPACE;
-
-$QSTR = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
-$_DOCROOT = isset($DOCROOT) ? __DIR__ . '/' . $DOCROOT : __DIR__;
-
-$matches = array();
-if (preg_match('/^([a-zA-Z]{2}(-[a-zA-Z]{2})?)\//', $QSTR, $matches, PREG_UNMATCHED_AS_NULL) === 1)
-{
-    $LANG = $matches[1];
-} else {
-    $LANG = get_request_language($_DOCROOT, $QSTR, $DEFLANG);
-}
-$_DOCROOT .= '/' . $LANG;
-
-$template = file_get_contents(__DIR__ . '/../resources/template.html');
-
-if ($template === false) {
-    $template = '<!DOCTYPE html><html lang="%LANG%"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>%TITLE%</title><!--%HEAD%---></head><body><p><strong>ERROR</strong> template.html could not be read.</p><header>%HEADER%</header><nav>%NAV%</nav><article>%BODY%</article><footer>%FOOTER%</footer></body></html>';
-}
-
-if (strlen($QSTR) == 0) {
-    $QSTR = $MAINPAGE ?? 'main';
-}
 
 $_HEAD = '';
 $BODY = get_page($mdParser, $spParser, $_DOCROOT, $QSTR, $LANG, $_HEAD, $TITLE);
