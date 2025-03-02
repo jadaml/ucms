@@ -103,7 +103,9 @@ if (preg_match('/^([a-zA-Z]{2}(-[a-zA-Z]{2})?)\//', $_PAGE, $matches, PREG_UNMAT
     $LANG = $matches[1];
 } else {
     $LANG = get_request_language($_DOCROOT, $_PAGE, $DEFLANG);
+    if (isset($DEFLANG) && $LANG == $DEFLANG) {
+        $_DOCROOT .= '/' . $LANG;
+    }
 }
-$_DOCROOT .= '/' . $LANG;
 
 ?>
