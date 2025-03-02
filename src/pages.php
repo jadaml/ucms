@@ -114,6 +114,7 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
         $head .= "\n    <meta property=\"article:modified_time\" content=\"{$GLOBALS["dater"]('c', $fileStat['mtime'])}\">";
         return $spParser->transform($mdParser->transform($markdown));
     } else {
+        error_log("Page not found: $localFilePath");
         $head = '<meta property="og:type" content="website">';
         $head .= "\n    <meta property=\"og:locale\" content=\"{$GLOBALS["replacer"]('-', '_', $lang)}\">";
         $head .= "\n    <meta property=\"og:site_name\" content=\"{$siteTitle}\">";
@@ -127,6 +128,7 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
             $markdown = file_get_contents($localErrorPath);
             return $spParser->transform($mdParser->transform($markdown));
         } else {
+            error_log("Error page not found: $localErrorPath");
             return <<<BODY
                 
                         <h1>The page was not found.</h1>
