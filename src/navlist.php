@@ -17,6 +17,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Michelf\Markdown;
 use Michelf\SmartyPants;
 
+include_once __DIR__ . '/utils.php';
+
 /**
  * Build a navigation list from the markdown files found in the document root.
  * @param Markdown $mdParser The markdown parser to use.
@@ -28,8 +30,7 @@ use Michelf\SmartyPants;
  */
 function build_nav_list(Markdown $mdParser, SmartyPants $spParser, string $base_dir, string $base_url, ?string $page): string {
     if (isset($page)) {
-        $pExt = pathinfo($page, PATHINFO_EXTENSION);
-        $localPath = $base_dir . '/' . $page . ($pExt == 'md' || $pExt == 'markdown' ? '' : '.md');
+        $localPath = $base_dir . '/' . get_file_with_markdown_extension($page);
         $markdown = file_get_contents($localPath);
         return $spParser->transform($mdParser->transform($markdown));
     } else{
@@ -52,7 +53,7 @@ function build_nav_list(Markdown $mdParser, SmartyPants $spParser, string $base_
                 $localPath = $base_dir . '/' . $subpath;
                 if (is_dir($localPath)) {
                     array_push($path, $subpath);
-                } elseif (is_file($localPath) && substr($file, -3) == '.md') {
+                } elseif (is_file($localPath) && is_markdown_with_extension($localPath)) {
                     $mdFile = fopen($localPath, 'r');
                     $title = fgets($mdFile);
                     fclose($mdFile);

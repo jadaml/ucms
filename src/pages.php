@@ -17,6 +17,8 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Michelf\Markdown;
 use Michelf\SmartyPants;
 
+include_once __DIR__ . '/utils.php';
+
 global $trimmer, $replacer, $dater;
 
 $trimmer = "trim";
@@ -84,8 +86,7 @@ function get_special_page(string $specialPage): string {
  * @return string The content of the requested page.
  */
 function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRoot, string $page, string $lang, string &$head, ?string $siteTitle): string {
-    $qExt = pathinfo($page, PATHINFO_EXTENSION);
-    $localFilePath = $docRoot . '/' . $page . ($qExt == 'md' || $qExt == 'markdown' ? '' : '.md');
+    $localFilePath = $docRoot . '/' . get_file_with_markdown_extension($page);
     if (file_exists($localFilePath)) {
         $fileStat = stat($localFilePath);
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $fileStat['mtime']) . ' GMT');
