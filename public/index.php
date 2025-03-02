@@ -89,9 +89,9 @@ if(isset($SPACE_UNIT) && is_int($SPACE_UNIT)) $spParser->space_unit = $SPACE_UNI
 if(isset($SPACE) && is_int($SPACE)) $spParser->space = $SPACE;
 
 include __DIR__ . '/../config/umcs.php';
-include __DIR__ . '/navlist.php';
-include __DIR__ . '/pages.php';
-include __DIR__ . '/langs.php';
+include __DIR__ . '/../src/navlist.php';
+include __DIR__ . '/../src/pages.php';
+include __DIR__ . '/../src/langs.php';
 
 $QSTR = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
 $_DOCROOT = isset($DOCROOT) ? __DIR__ . '/' . $DOCROOT : __DIR__;
@@ -105,7 +105,7 @@ if (preg_match('/^([a-zA-Z]{2}(-[a-zA-Z]{2})?)\//', $QSTR, $matches, PREG_UNMATC
 }
 $_DOCROOT .= '/' . $LANG;
 
-$template = file_get_contents(__DIR__ . '/template.html');
+$template = file_get_contents(__DIR__ . '/../resources/template.html');
 
 if ($template === false) {
     $template = '<!DOCTYPE html><html lang="%LANG%"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>%TITLE%</title><!--%HEAD%---></head><body><p><strong>ERROR</strong> template.html could not be read.</p><header>%HEADER%</header><nav>%NAV%</nav><article>%BODY%</article><footer>%FOOTER%</footer></body></html>';
