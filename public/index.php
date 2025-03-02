@@ -20,6 +20,11 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Michelf\MarkdownExtra;
 use Michelf\SmartyPantsTypographer;
 
+include __DIR__ . '/../config/umcs.php';
+include __DIR__ . '/../src/navlist.php';
+include __DIR__ . '/../src/pages.php';
+include __DIR__ . '/../src/langs.php';
+
 $mdParser = new MarkdownExtra;
 if (isset($TAB_WIDTH) && is_int($TAB_WIDTH)) $mdParser->tab_width = $TAB_WIDTH;
 if (isset($HARD_WRAP) && is_bool($HARD_WRAP)) $mdParser->hard_wrap = $HARD_WRAP;
@@ -86,11 +91,6 @@ if(isset($SPACE_FRENCHQUOTE) && is_string($SPACE_FRENCHQUOTE)) $spParser->space_
 if(isset($SPACE_THOUSANDS) && is_string($SPACE_THOUSANDS)) $spParser->space_thousand = $SPACE_THOUSANDS;
 if(isset($SPACE_UNIT) && is_int($SPACE_UNIT)) $spParser->space_unit = $SPACE_UNIT;
 if(isset($SPACE) && is_int($SPACE)) $spParser->space = $SPACE;
-
-include __DIR__ . '/../config/umcs.php';
-include __DIR__ . '/../src/navlist.php';
-include __DIR__ . '/../src/pages.php';
-include __DIR__ . '/../src/langs.php';
 
 $QSTR = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
 $_DOCROOT = isset($DOCROOT) ? __DIR__ . '/' . $DOCROOT : __DIR__;
