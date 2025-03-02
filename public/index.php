@@ -21,20 +21,13 @@ use Michelf\MarkdownExtra;
 use Michelf\SmartyPantsTypographer;
 
 include_once __DIR__ . '/../config/umcs.php';
+include_once __DIR__ . '/../src/langs.php';
+include_once __DIR__ . '/../src/md_sp.php';
 include_once __DIR__ . '/../src/navlist.php';
 include_once __DIR__ . '/../src/pages.php';
-include_once __DIR__ . '/../src/langs.php';
 
 $QSTR = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
 $_DOCROOT = isset($DOCROOT) ? __DIR__ . '/' . $DOCROOT : __DIR__;
-
-$matches = array();
-if (preg_match('/^([a-zA-Z]{2}(-[a-zA-Z]{2})?)\//', $QSTR, $matches, PREG_UNMATCHED_AS_NULL) === 1)
-{
-    $LANG = $matches[1];
-} else {
-    $LANG = get_request_language($_DOCROOT, $QSTR, $DEFLANG);
-}
 $_DOCROOT .= '/' . $LANG;
 
 $template = file_get_contents(__DIR__ . '/../resources/template.html');
@@ -46,8 +39,6 @@ if ($template === false) {
 if (strlen($QSTR) == 0) {
     $QSTR = $MAINPAGE ?? 'main';
 }
-
-include_once __DIR__ . '/../src/md_sp.php';
 
 $_HEAD = '';
 $BODY = get_page($mdParser, $spParser, $_DOCROOT, $QSTR, $LANG, $_HEAD, $TITLE);
