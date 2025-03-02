@@ -20,7 +20,6 @@ require_once __DIR__ . '/../vendor/autoload.php';
 use Michelf\MarkdownExtra;
 use Michelf\SmartyPantsTypographer;
 
-// TODO: Implement configurations of MarkdownExtra and SmartyPantsTypographer in config.php
 $mdParser = new MarkdownExtra;
 if (isset($TAB_WIDTH) && is_int($TAB_WIDTH)) $mdParser->tab_width = $TAB_WIDTH;
 if (isset($HARD_WRAP) && is_bool($HARD_WRAP)) $mdParser->hard_wrap = $HARD_WRAP;
