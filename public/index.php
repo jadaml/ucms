@@ -16,7 +16,7 @@
  * @date 2025
  */
 
-$_PAGE = parse_url($_SERVER['REQUEST_URI'], PHP_URL_QUERY);
+$_PAGE = $_SERVER['QUERY_STRING'] ?? '';
 $_DOCROOT = (isset($DOCROOT) && strlen($DOCROOT) > 0) ? __DIR__ . '/' . $DOCROOT : __DIR__;
 
 include_once __DIR__ . '/../config/ucms.php';
