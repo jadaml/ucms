@@ -105,8 +105,8 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
                 $description = substr($description, 0, $pPos + 1);
             }
         }
-        $origin = $ORIGIN ?? "http://" . $_SERVER['HTTP_HOST'];
-        $siteImg = $SITE_IMAGE ?? '/images/ucms.png';
+        $origin = $GLOBALS['ORIGIN'] ?? "http://" . $_SERVER['HTTP_HOST'];
+        $siteImg = $GLOBALS['SITE_IMAGE'] ?? '/images/ucms.png';
         $head = '<meta property="og:type" content="article">';
         $head .= "\n    <meta property=\"og:image\" content=\"$origin$siteImg\">";
         $head .= "\n    <meta property=\"og:title\" content=\"{$GLOBALS["trimmer"]($mdLines[0], '\n\r\t\v\0 #')}\">";
