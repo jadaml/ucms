@@ -19,6 +19,10 @@
     --content-background-color: white;
     --content-foreground-color: black;
   }
+
+  :link { color: #0000EE; }
+  :visited { color: #551A8B; }
+  :link:active, :visited:active { color: #FF0000; }
 }
 
 @media(prefers-color-scheme:dark) {
@@ -28,13 +32,9 @@
     --content-foreground-color: white;
   }
 
-  a {
-    color: light  skyblue;
-  }
-
-  a:visited {
-    color: orchid;
-  }
+  :link { color: cornflowerblue; }
+  :visited { color: orchid; }
+  :link:active, :visited:active { color: tomato; }
 }
 
 body {
