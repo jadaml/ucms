@@ -71,6 +71,97 @@ function get_special_page(string $specialPage): string {
                         </ul>
 
                 VERSION;
+        case 'CONFIG':
+            global $TITLE, $DEFLANG, $COPYNOTE, $DOCROOT, $NAVPAGE, $ERRPAGE, $ORIGIN, $URL_PATH_BASE, $SITE_IMAGE;
+            global $mdParser, $spParser;
+            $title = $TITLE ?? '<em>Micro Content Management System</em>';
+            $defLang = $DEFLANG ?? '<em>en</em>';
+            $docRoot = $DOCROOT ?? '/';
+            $navPage = $NAVPAGE ?? '<em>auto populated</em>';
+            $errPage = $ERRPAGE ?? '<em>internal</em>';
+            $origin = $ORIGIN ?? '<em>http://' . $_SERVER['HTTP_HOST'] . '</em>';
+            $urlBase = $URL_PATH_BASE ?? '<em>/index.php?</em>';
+            $siteImage = $SITE_IMAGE ?? '/images/ucms.png';
+            $result = <<<CONFIG
+
+                  <table>
+                    <tr>
+                      <th colspan="2">Site configuration</th>
+                    </tr>
+                    <tr>
+                      <th>Setting</th>
+                      <th>Value</th>
+                    </tr>
+                    <tr>
+                      <th>Site title</th>
+                      <td>$title</td>
+                    </tr>
+                    <tr>
+                      <th>Default language</th>
+                      <td>$defLang</td>
+                    </tr>
+                    <tr title="Before &micro;CMS copyright notice.">
+                      <th>Copyright notice</th>
+                      <td>$COPYNOTE</td>
+                    </tr>
+                    <tr title="Relative to index.php.">
+                      <th>Document Root</th>
+                      <td>$docRoot</td>
+                    </tr>
+                    <tr>
+                      <th>Navigation page</th>
+                      <td>$navPage</td>
+                    </tr>
+                    <tr>
+                      <th>Error page</th>
+                      <td>$errPage</th>
+                    </tr>
+                    <tr>
+                      <th>Link Origin</th>
+                      <td>$origin</td>
+                    </tr>
+                    <tr>
+                      <th>Link Path Base</th>
+                      <td>$urlBase</td>
+                    </tr>
+                    <tr>
+                      <th>Site Image</th>
+                      <td><img src="$siteImage"/></td>
+                    </tr>
+                    <tr>
+                      <th colspan="2">Markdown parser configuration</th>
+                    </tr>
+                    <tr>
+                      <th>Setting</th>
+                      <th>Value</th>
+                    </tr>
+            
+            CONFIG;
+            foreach($mdParser as $key => $value) {
+                $result .= "        <tr>\n";
+                $result .= "          <th>$key</th>\n";
+                $result .= "          <td><pre><code class=\"{$mdParser->code_class_prefix}php\" style=\"padding:0; background-color:initial;\">" . var_export($value, true) . "</code></pre></td>\n";
+                $result .= "        </tr>\n";
+            }
+            $result .= <<<CONFIG
+                    <tr>
+                      <th colspan="2">SmartyPants parser configuration</th>
+                    </tr>
+                    <tr>
+                      <th>Setting</th>
+                      <th>Value</th>
+                    </tr>
+            CONFIG;
+            foreach($spParser as $key => $value) {
+                $result .= "        <tr>\n";
+                $result .= "          <th>$key</th>\n";
+                $result .= "          <td><pre><code class=\"{$mdParser->code_class_prefix}php\" style=\"padding:0; background-color:initial;\">" . var_export($value, true) . "</code></pre></td>\n";
+                $result .= "        </tr>\n";
+            }
+            $result .= <<<CONFIG
+                  </table>
+            CONFIG;
+            return $result;
         default:
             return '';
     }
