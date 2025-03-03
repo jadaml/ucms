@@ -106,7 +106,7 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
             }
         }
         $origin = $ORIGIN ?? "http://" . $_SERVER['HTTP_HOST'];
-        $siteImg = $SITE_IMAGE ?? '/ucms.png';
+        $siteImg = $SITE_IMAGE ?? '/images/ucms.png';
         $head = '<meta property="og:type" content="article">';
         $head .= "\n    <meta property=\"og:image\" content=\"$origin$siteImg\">";
         $head .= "\n    <meta property=\"og:title\" content=\"{$GLOBALS["trimmer"]($mdLines[0], '\n\r\t\v\0 #')}\">";
