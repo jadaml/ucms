@@ -23,6 +23,7 @@ include_once __DIR__ . '/utils.php';
 $trimmer = "trim";
 $replacer = "str_replace";
 $dater = "gmdate";
+$phpversion = "phpversion";
 
 /**
  * Produces the content of a special, build-in page.
@@ -30,6 +31,8 @@ $dater = "gmdate";
  * @return string The content of the special page.
  */
 function get_special_page(string $specialPage): string {
+    global $phpversion;
+
     switch (strtoupper($specialPage)) {
         case 'ABOUT':
             return <<<ABOUT
@@ -53,6 +56,7 @@ function get_special_page(string $specialPage): string {
                         <p>Version 2.0.0</p>
                         <p>Powered by:</p>
                         <ul id="versions">
+                            <li>PHP {$phpversion()}</li>
                             <li>PHP Markdown Lib $mdv</li>
                             <li>PHP SmartyPants Lib $spv</li>
                             <script id="hljs-ver-script">
@@ -67,7 +71,6 @@ function get_special_page(string $specialPage): string {
                         </ul>
 
                 VERSION;
-            break;
         default:
             return '';
     }
