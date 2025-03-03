@@ -7,6 +7,9 @@
   $MAINPAGE = 'main';
 //$NAVPAGE = 'nav';
 //$ERRPAGE = 'err';
+//$ORIGIN = 'http://www.example.com';
+//$URL_PATH_BASE = '/index.php?';
+//$SITE_IMAGE = '/site.jpg';
 //////////////// Markdown Configuration ////////////////
 //$TAB_WIDTH=4;
 //$HARD_WRAP=false;

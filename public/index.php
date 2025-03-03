@@ -40,7 +40,8 @@ $_TITLE = $TITLE ?? 'Micro Content Management System?';
 $BODY = get_page($mdParser, $spParser, $_DOCROOT, $_PAGE, $LANG, $_HEAD, $_TITLE);
 $_COPYNOTE = isset($COPYNOTE) && strlen($COPYNOTE) > 0 ? '<p>' . $COPYNOTE . '</p>' : '';
 $_COPYNOTE .= '<p>Powered by µCMS &copy; 2025 Ádám Juhász</p>';
-$NAV = build_nav_list($mdParser, $spParser, $_DOCROOT, "index.php?", $NAVPAGE ?? null, $LANG);
+$_PATH_BASE = $URL_PATH_BASE ?? '/index.php?';
+$NAV = build_nav_list($mdParser, $spParser, $_DOCROOT, $_PATH_BASE, $NAVPAGE ?? null, $LANG);
 
 $needles = array('%LANG%', '<!--%HEAD%-->', '%TITLE%', '%HEADER%', '%NAV%', '%BODY%', '%FOOTER%');
 $values = array($LANG, $_HEAD, $_TITLE, '<p class="align-left">' . $_TITLE . '</p>', $NAV, $BODY, $_COPYNOTE);
