@@ -1,3 +1,6 @@
+@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css") (prefers-color-scheme:light);
+@import url("https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/dark.min.css") (prefers-color-scheme:dark);
+
 :root {
   --content-radius: 12px;
   --content-padding: 18px;
