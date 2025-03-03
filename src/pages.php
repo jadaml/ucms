@@ -179,7 +179,7 @@ function get_special_page(string $specialPage): string {
  * @return string The content of the requested page.
  */
 function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRoot, string $page, string $lang, string &$head, ?string $siteTitle): string {
-    global $trimmer, $replacer, $dater, $ORIGIN, $SITE_IMAGE;
+    global $trimmer, $replacer, $dater, $ORIGIN, $SITE_IMAGE, $URL_PATH_BASE;
 
     $localFilePath = $docRoot . '/' . get_file_with_markdown_extension($page);
     if (file_exists($localFilePath)) {
@@ -202,9 +202,11 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
         }
         $origin = $ORIGIN ?? "http://" . $_SERVER['HTTP_HOST'];
         $siteImg = $SITE_IMAGE ?? '/images/ucms.png';
+        $urlPathBase = $URL_PATH_BASE ?? '/index.php?';
         $head = '<meta property="og:type" content="article">';
         $head .= "\n    <meta property=\"og:image\" content=\"$origin$siteImg\">";
         $head .= "\n    <meta property=\"og:title\" content=\"{$trimmer($mdLines[0], '\n\r\t\v\0 #')}\">";
+        $head .= "\n    <meta property=\"og:url\" content=\"$origin$urlPathBase$page\">";
         $head .= "\n    <meta property=\"og:description\" content=\"{$trimmer($description)}\">";
         $head .= "\n    <meta property=\"og:locale\" content=\"{$replacer('-', '_', $lang)}\">";
         $head .= "\n    <meta property=\"og:site_name\" content=\"{$siteTitle}\">";
