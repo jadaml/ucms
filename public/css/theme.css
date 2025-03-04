@@ -131,5 +131,6 @@ blockquote {
   body > nav > ul > li:not(:last-child)::after {
     content: "|";
     margin: 0 0.4em;
+    padding-left: 0.24em;
   }
 }
