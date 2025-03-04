@@ -64,6 +64,7 @@ body > header {
   font-size: xx-large;
   font-weight: bold;
   font-family: var(--font-header);
+  line-height: 1.2em;
 }
 
 body > footer > p {
