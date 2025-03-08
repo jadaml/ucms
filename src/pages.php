@@ -188,23 +188,32 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
         $markdown = file_get_contents($localFilePath);
         $mdLines = explode("\n", $markdown);
         $description = '';
-        foreach ($mdLines as $line) {
-            if (strlen($line) == 0 && strlen($description) == 0 || substr($line, 0, 1) == '#') continue;
-            elseif (strlen($line) == 0) break;
-            $description .= ' ' . $line;
-        }
-        $pPos = strpos($description, '.');
-        if ($pPos !== false) {
-            $pPos = strpos($description, '.', $pPos + 1);
-            if ($pPos !== false) {
-                $description = substr($description, 0, $pPos + 1);
+        $html = $spParser->transform($mdParser->transform($markdown));
+        $img = null;
+        $match = array();
+        if (preg_match_all("/<p>(.*?)<\/p>/is", $html, $match) !== false) {
+            $text = join(" ", $match[1]);
+            if (preg_match('/<img src="(.*?)".*?>/i', $text, $match) !== false) {
+                $img = $match[1];
+                if ($img[0] != '/') {
+                    $img = dirname($_SERVER['REQUEST_URI']) . $img;
+                }
+            }
+            $text = trim(strip_tags($text));
+            if (preg_match_all('/\.(\W|$)/s', $text, $match, PREG_OFFSET_CAPTURE)) {
+                if (array_count_values($match[1]) == 1) {
+                  $description = substr($text, 0, $match[1][0][1]);
+                } else {
+                  $description = substr($text, 0, $match[1][1][1]);
+                }
             }
         }
         $origin = $ORIGIN ?? "http://" . $_SERVER['HTTP_HOST'];
-        $siteImg = $SITE_IMAGE ?? '/images/ucms.png';
+        $siteImg = $img ?? $SITE_IMAGE ?? '/images/ucms.png';
+        if (!str_starts_with($siteImg, 'http')) $siteImg = $origin . $siteImg;
         $urlPathBase = $URL_PATH_BASE ?? '/index.php?';
         $head = '<meta property="og:type" content="article">';
-        $head .= "\n    <meta property=\"og:image\" content=\"$origin$siteImg\">";
+        $head .= "\n    <meta property=\"og:image\" content=\"$siteImg\">";
         $head .= "\n    <meta property=\"og:title\" content=\"{$trimmer($mdLines[0], '\n\r\t\v\0 #')}\">";
         $head .= "\n    <meta property=\"og:url\" content=\"$origin$urlPathBase$page\">";
         $head .= "\n    <meta property=\"og:description\" content=\"{$trimmer($description)}\">";
@@ -212,7 +221,7 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
         $head .= "\n    <meta property=\"og:site_name\" content=\"{$siteTitle}\">";
         $head .= "\n    <meta property=\"article:published_time\" content=\"{$dater('c', $fileStat['ctime'])}\">";
         $head .= "\n    <meta property=\"article:modified_time\" content=\"{$dater('c', $fileStat['mtime'])}\">";
-        return $spParser->transform($mdParser->transform($markdown));
+        return $html;
     } else {
         error_log("Page not found: $localFilePath");
         $head = '<meta property="og:type" content="website">';
