@@ -1,4 +1,4 @@
-# Micro Content Management System #
+# Micro Content Management System
 
 *[CMS]: Content Management System
 *[µCMS]: Micro Content Management System
@@ -10,12 +10,56 @@ Originally I have created µCMS as a practice to learn PHP in the early 2000s, I
 
 When referring to µCMS in a context, where only ASCII characters are available, you may refer to this software as either mCMS or uCMS—though I personally don't like the typesetting of 'µ' as 'u' despite the project package name uses it.
 
-## Setup development environment ##
+## Setup development environment
 
-**TODO** _Describe how to set up VS Code to build this project._
+## Install µCMS
 
-## Install µCMS ##
+### Download dependencies
 
-**TODO** _Describe how to set up µCMS to run on your own server._
+If you have downloaded a release package, then you only need to extract the package to your desired location.
 
-**TODO** _Consider additional information in the README.md file._
+If you are cloning this repository, yoiu need Composer to be installed, and execute the following command first:
+
+```sh
+composer install
+```
+
+after that, you will need to copy the following files to your desired destination:
+
+- config
+  - ucms.php
+- public
+  - css
+    - style.css
+    - theme.css
+  - en
+    - err.md
+    - main.md
+  - images
+    - ucms.png
+  - .htaccess
+  - index.php
+- resources
+  - template.html
+- src
+  - langs.php
+  - md_sp.php
+  - navlist.php
+  - pages.php
+  - utils.php
+- vendor
+  - *Just copy the entire folder. this document would go on for ages if I'd list all the files.*
+
+### Set Up Webserver
+
+Make sure that the files have the appropriate rights for your server to read them. µCMS does not write to it's files, and thus does not need the files to be writable.
+
+Then you need to set your web server's document root to the public folder you have copied. So for example, if you have copied all the above files to the /var/www path, then you would set the document root to /var/www/public.
+
+If you want, you can change the name of the public folder, but make sure that the document root is the changed folder.
+
+If you would like to hide "index.php" in the URL, you also need to enable the rewrite module, so .htaccess files are considered by the server. When enabled, /index.php?dir/page requests are translated to /dir/page requests.
+
+### Configuration
+
+While the default configuration of µCMS is set so it can be immediately used, there are some configuration options for your convenience. These configurations are also configured in the shipped [main.md](public/en/main.md) file.
