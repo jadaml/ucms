@@ -201,7 +201,7 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
             }
             $text = trim(strip_tags($text));
             if (preg_match_all('/[.!?](\W|$)/s', $text, $match, PREG_OFFSET_CAPTURE) != false) {
-                if (array_count_values($match[1]) == 1) {
+                if (count($match[1]) == 1) {
                   $description = substr($text, 0, $match[1][0][1]);
                 } else {
                   $description = substr($text, 0, $match[1][1][1]);
