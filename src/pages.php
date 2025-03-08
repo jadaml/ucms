@@ -191,16 +191,16 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
         $html = $spParser->transform($mdParser->transform($markdown));
         $img = null;
         $match = array();
-        if (preg_match_all("/<p>(.*?)<\/p>/is", $html, $match) !== false) {
+        if (preg_match_all("/<p>(.*?)<\/p>/is", $html, $match) != false) {
             $text = join(" ", $match[1]);
-            if (preg_match('/<img src="(.*?)".*?>/i', $text, $match) !== false) {
+            if (preg_match('/<img src="(.*?)".*?>/i', $text, $match) != false) {
                 $img = $match[1];
                 if ($img[0] != '/') {
                     $img = dirname($_SERVER['REQUEST_URI']) . $img;
                 }
             }
             $text = trim(strip_tags($text));
-            if (preg_match_all('/\.(\W|$)/s', $text, $match, PREG_OFFSET_CAPTURE)) {
+            if (preg_match_all('/[.!?](\W|$)/s', $text, $match, PREG_OFFSET_CAPTURE) != false) {
                 if (array_count_values($match[1]) == 1) {
                   $description = substr($text, 0, $match[1][0][1]);
                 } else {
