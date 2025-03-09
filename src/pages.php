@@ -25,11 +25,6 @@ $replacer = "str_replace";
 $dater = "gmdate";
 $phpversion = "phpversion";
 
-/**
- * Checks if a string's length is non-zero.
- * @param string $value The string to check.
- * @return bool `true` if the string is non-zero in length, otherwise `false`.
- */
 function strlen_not_null(string $value): bool {
     return strlen($value) != 0;
 }
@@ -203,6 +198,7 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
         $match = array();
         if (preg_match_all("/<p>(.*?)<\/p>/is", $html, $match) != false) {
             $paras = array_values(array_filter($match[1], 'strip_tags'));
+            error_log(print_r($paras, true));
             $searchDesc = strip_tags(array_filter($paras, 'strlen_not_null')[0]);
             $text = join(" ", $paras);
             if (preg_match('/<img src="(.*?)".*?>/i', $text, $match) != false) {
@@ -224,7 +220,7 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
         $siteImg = $img ?? $SITE_IMAGE ?? '/images/ucms.png';
         if (!str_starts_with($siteImg, 'http')) $siteImg = $origin . $siteImg;
         $urlPathBase = $URL_PATH_BASE ?? '/index.php?';
-        $head = "<meta property=\"description\" content=\"$searchDesc\">";
+        $head = "<meta name=\"description\" content=\"$searchDesc\">";
         $head .= "\n    <meta property=\"og:type\" content=\"article\">";
         $head .= "\n    <meta property=\"og:image\" content=\"$siteImg\">";
         $head .= "\n    <meta property=\"og:title\" content=\"{$trimmer($mdLines[0], '\n\r\t\v\0 #')}\">";
