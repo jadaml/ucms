@@ -26,6 +26,15 @@ $dater = "gmdate";
 $phpversion = "phpversion";
 
 /**
+ * Checks if a string's length is non-zero.
+ * @param string $value The string to check.
+ * @return bool `true` if the string is non-zero in length, otherwise `false`.
+ */
+function strlen_not_null(string $value): bool {
+    return strlen($value) != 0;
+}
+
+/**
  * Produces the content of a special, build-in page.
  * @param string $specialPage The name of the special page.
  * @return string The content of the special page.
@@ -188,18 +197,21 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
         $markdown = file_get_contents($localFilePath);
         $mdLines = explode("\n", $markdown);
         $description = '';
+        $searchDesc = '';
         $html = $spParser->transform($mdParser->transform($markdown));
         $img = null;
         $match = array();
         if (preg_match_all("/<p>(.*?)<\/p>/is", $html, $match) != false) {
-            $text = join(" ", $match[1]);
+            $paras = array_values(array_filter($match[1], 'strip_tags'));
+            $searchDesc = strip_tags(array_filter($paras, 'strlen_not_null')[0]);
+            $text = join(" ", $paras);
             if (preg_match('/<img src="(.*?)".*?>/i', $text, $match) != false) {
                 $img = $match[1];
                 if ($img[0] != '/') {
                     $img = dirname($_SERVER['REQUEST_URI']) . $img;
                 }
             }
-            $text = trim(strip_tags($text));
+            $text = strip_tags($text);
             if (preg_match_all('/[.!?](\W|$)/s', $text, $match, PREG_OFFSET_CAPTURE) != false) {
                 if (count($match[1]) == 1) {
                   $description = substr($text, 0, $match[1][0][1]);
@@ -212,7 +224,8 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
         $siteImg = $img ?? $SITE_IMAGE ?? '/images/ucms.png';
         if (!str_starts_with($siteImg, 'http')) $siteImg = $origin . $siteImg;
         $urlPathBase = $URL_PATH_BASE ?? '/index.php?';
-        $head = '<meta property="og:type" content="article">';
+        $head = "<meta property=\"description\" content=\"$searchDesc\">";
+        $head .= "\n    <meta property=\"og:type\" content=\"article\">";
         $head .= "\n    <meta property=\"og:image\" content=\"$siteImg\">";
         $head .= "\n    <meta property=\"og:title\" content=\"{$trimmer($mdLines[0], '\n\r\t\v\0 #')}\">";
         $head .= "\n    <meta property=\"og:url\" content=\"$origin$urlPathBase$page\">";
