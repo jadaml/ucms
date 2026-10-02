@@ -2,6 +2,7 @@
     "recommendations": [
         "devsense.composer-php-vscode",
         "betwo.vscode-doxygen-runner",
-        "bbenoist.doxygen"
+        "bbenoist.doxygen",
+        "xdebug.php-debug"
     ]
 }
