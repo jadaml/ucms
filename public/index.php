@@ -17,9 +17,9 @@
  */
 
 $_PAGE = $_SERVER['QUERY_STRING'] ?? '';
-$_DOCROOT = (isset($DOCROOT) && strlen($DOCROOT) > 0) ? __DIR__ . '/' . $DOCROOT : __DIR__;
 
 include_once __DIR__ . '/../config/ucms.php';
+$_DOCROOT = realpath((isset($DOCROOT) && strlen($DOCROOT) > 0) ? __DIR__ . '/' . $DOCROOT : __DIR__);
 include_once __DIR__ . '/../src/langs.php';
 include_once __DIR__ . '/../src/md_sp.php';
 include_once __DIR__ . '/../src/navlist.php';
@@ -39,7 +39,7 @@ $_HEAD = '';
 $_TITLE = $TITLE ?? 'Micro Content Management System?';
 $BODY = get_page($mdParser, $spParser, $_DOCROOT, $_PAGE, $LANG, $_HEAD, $_TITLE);
 $_COPYNOTE = isset($COPYNOTE) && strlen($COPYNOTE) > 0 ? '<p>' . $COPYNOTE . '</p>' : '';
-$_COPYNOTE .= '<p>Powered by µCMS &copy; 2025 Ádám Juhász</p>';
+$_COPYNOTE .= '<p>Powered by µCMS &copy; 2025, 2026 Ádám Juhász</p>';
 $_PATH_BASE = $URL_PATH_BASE ?? '/index.php?';
 $NAV = build_nav_list($mdParser, $spParser, $_DOCROOT, $_PATH_BASE, $NAVPAGE ?? null, $LANG);
 

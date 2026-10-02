@@ -44,7 +44,7 @@ function get_special_page(string $specialPage): string {
                     <h1>Welcome to Micro Content Management System</h1>
                     <p>Micro Content Management System (µCMS) is a lightweight CMS software, which allow users to provide the content in Markdown files. The hierarchy of the pages are defined by the file hierarchy the markdown files are placed, and every page is queried with GET requests, thus eliminating the need to maintain a database on the host.</p>
                     <p>Originally I have created µCMS as a practice to learn PHP in the early 2000s, I have released it as a means to quickly create a CMS website, without much knowledge on building one. Although it is severely inadequate compared to other modern solution, this project remains only as an option to those, who wants to deepen their web server management skill, by introducing a tool that does not provide much help in maintaining the site for them, forcing their hands to a more hands-on experience, as technologically it is severely limited. That limitation is the reason it is called micro-CMS.</p>
-                    <p>Micro Content Management System Copyright &copy; 2025 Ádám Juhász</p>
+                    <p>Micro Content Management System Copyright &copy; 2025, 2026 Ádám Juhász</p>
                     <p>PHP Markdown Lib Copyright &copy; 2004&ndash;2015 Michel Fortin <a href="https://michelf.ca/">https://michelf.ca/</a> All rights reserved.<br/>
                     Based on Markdown Copyright &copy; 2003&ndash;2005 John Gruber <a href="https://daringfireball.net/">https://daringfireball.net/</a> All rights reserved.</p>
                     <p>PHP SmartyPants Lib, Copyright &copy; 2005&ndash;2016 Michel Fortin <a href="https://michelf.ca/">https://michelf.ca/</a> All rights reserved.<br/>
@@ -185,8 +185,10 @@ function get_special_page(string $specialPage): string {
 function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRoot, string $page, string $lang, string &$head, ?string $siteTitle): string {
     global $trimmer, $replacer, $dater, $ORIGIN, $SITE_IMAGE, $URL_PATH_BASE;
 
-    $localFilePath = $docRoot . '/' . get_file_with_markdown_extension($page);
-    if (file_exists($localFilePath)) {
+    $localFilePath = realpath($docRoot . DIRECTORY_SEPARATOR . get_file_with_markdown_extension($page));
+    if ($localFilePath !== false
+     && str_starts_with($localFilePath, $docRoot . DIRECTORY_SEPARATOR)
+     && file_exists($localFilePath)) {
         $fileStat = stat($localFilePath);
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $fileStat['mtime']) . ' GMT');
         $markdown = file_get_contents($localFilePath);
@@ -198,7 +200,6 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
         $match = array();
         if (preg_match_all("/<p>(.*?)<\/p>/is", $html, $match) != false) {
             $paras = array_values(array_filter($match[1], 'strip_tags'));
-            error_log(print_r($paras, true));
             $searchDesc = strip_tags(array_filter($paras, 'strlen_not_null')[0]);
             $text = join(" ", $paras);
             if (preg_match('/<img src="(.*?)".*?>/i', $text, $match) != false) {
@@ -232,21 +233,20 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
         $head .= "\n    <meta property=\"article:modified_time\" content=\"{$dater('c', $fileStat['mtime'])}\">";
         return $html;
     } else {
-        error_log("Page not found: $localFilePath");
+        error_log('Page not found: ' . $page);
         $head = '<meta property="og:type" content="website">';
         $head .= "\n    <meta property=\"og:locale\" content=\"{$replacer('-', '_', $lang)}\">";
         $head .= "\n    <meta property=\"og:site_name\" content=\"{$siteTitle}\">";
         http_response_code(404);
-        if (isset($ERRPAGE)) {
-            $localErrorPath = $docRoot . '/' . get_file_with_markdown_extension($ERRPAGE);
-        } else {
-            $localErrorPath = $docRoot . '/' . '/err.md';
-        }
-        if (file_exists($localErrorPath)) {
+        $page = isset($ERRPAGE) ? get_file_with_markdown_extension($ERRPAGE) : 'err.md';
+        $localErrorPath = realpath($docRoot . DIRECTORY_SEPARATOR . $page);
+        if ($localErrorPath !== false
+         && str_starts_with($localErrorPath, $docRoot . DIRECTORY_SEPARATOR)
+         && file_exists($localErrorPath)) {
             $markdown = file_get_contents($localErrorPath);
             return $spParser->transform($mdParser->transform($markdown));
         } else {
-            error_log("Error page not found: $localErrorPath");
+            error_log('Error page not found: ' . $page);
             return <<<BODY
                 
                         <h1>The page was not found.</h1>
