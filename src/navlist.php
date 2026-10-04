@@ -46,10 +46,9 @@ function build_nav_list(Markdown $mdParser, SmartyPants $spParser, string $base_
     $p404 = isset($ERRPAGE) ? get_file_with_markdown_extension($ERRPAGE) : 'err.md';
 
     do {
-        if (count($path) > 0) {
-            $subdir = $path[0];
-            $scanPath = $base_dir . '/' . $path[0];
-            $path = array_splice($path, 0, 1);
+        if (($nextPath = array_pop($path)) !== null) {
+            $subdir = $nextPath;
+            $scanPath = $base_dir . '/' . $nextPath;
         } else {
             $subdir = '';
             $scanPath = $base_dir;
