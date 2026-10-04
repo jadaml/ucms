@@ -76,7 +76,7 @@ function get_special_page(string $specialPage): string {
 
                 VERSION;
         case 'CONFIG':
-            global $TITLE, $DEFLANG, $COPYNOTE, $DOCROOT, $NAVPAGE, $ERRPAGE, $ORIGIN, $URL_PATH_BASE, $SITE_IMAGE;
+            global $TITLE, $DEFLANG, $COPYNOTE, $NAVPAGE, $ERRPAGE, $ORIGIN, $URL_PATH_BASE, $SITE_IMAGE;
             global $mdParser, $spParser;
             $title = $TITLE ?? '<em>Micro Content Management System</em>';
             $defLang = $DEFLANG ?? '<em>en</em>';
@@ -107,10 +107,6 @@ function get_special_page(string $specialPage): string {
                     <tr title="Before &micro;CMS copyright notice.">
                       <th>Copyright notice</th>
                       <td>$COPYNOTE</td>
-                    </tr>
-                    <tr title="Relative to index.php.">
-                      <th>Document Root</th>
-                      <td>$docRoot</td>
                     </tr>
                     <tr>
                       <th>Navigation page</th>
