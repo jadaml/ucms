@@ -57,7 +57,7 @@ function get_special_page(string $specialPage): string {
             return <<<VERSION
 
                         <h1>Micro Content Management System</h1>
-                        <p>Version 2.0.0</p>
+                        <p>Version 2.1.0</p>
                         <p>Powered by:</p>
                         <ul id="versions">
                             <li>PHP {$phpversion()}</li>
