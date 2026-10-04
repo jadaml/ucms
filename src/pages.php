@@ -181,9 +181,9 @@ function get_special_page(string $specialPage): string {
 function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRoot, string $page, string $lang, string &$head, ?string $siteTitle): string {
     global $trimmer, $replacer, $dater, $ORIGIN, $SITE_IMAGE, $URL_PATH_BASE;
 
-    $localFilePath = realpath($docRoot . DIRECTORY_SEPARATOR . get_file_with_markdown_extension($page));
+    $localFilePath = realpath($docRoot . '/' . get_file_with_markdown_extension($page));
     if ($localFilePath !== false
-     && str_starts_with($localFilePath, $docRoot . DIRECTORY_SEPARATOR)
+     && str_starts_with($localFilePath, $docRoot . '/')
      && file_exists($localFilePath)) {
         $fileStat = stat($localFilePath);
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s', $fileStat['mtime']) . ' GMT');
@@ -235,9 +235,9 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
         $head .= "\n    <meta property=\"og:site_name\" content=\"{$siteTitle}\">";
         http_response_code(404);
         $page = isset($ERRPAGE) ? get_file_with_markdown_extension($ERRPAGE) : 'err.md';
-        $localErrorPath = realpath($docRoot . DIRECTORY_SEPARATOR . $page);
+        $localErrorPath = realpath($docRoot . '/' . $page);
         if ($localErrorPath !== false
-         && str_starts_with($localErrorPath, $docRoot . DIRECTORY_SEPARATOR)
+         && str_starts_with($localErrorPath, $docRoot . '/')
          && file_exists($localErrorPath)) {
             $markdown = file_get_contents($localErrorPath);
             return $spParser->transform($mdParser->transform($markdown));

@@ -31,9 +31,9 @@ include_once __DIR__ . '/utils.php';
  */
 function build_nav_list(Markdown $mdParser, SmartyPants $spParser, string $base_dir, string $base_url, ?string $page): string {
     if (isset($page)) {
-        $localPath = realpath($base_dir . DIRECTORY_SEPARATOR . get_file_with_markdown_extension($page));
+        $localPath = realpath($base_dir . '/' . get_file_with_markdown_extension($page));
         if ($localPath !== false
-         && str_starts_with($localPath, $base_dir . DIRECTORY_SEPARATOR)
+         && str_starts_with($localPath, $base_dir . '/')
          && file_exists($localPath)) {
             $markdown = file_get_contents($localPath);
             return $spParser->transform($mdParser->transform($markdown));
