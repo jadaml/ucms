@@ -10,7 +10,11 @@
  */
 /**
  * @file utils.php
- * Contains utility functions for Micro Content Management System.
+ * @brief Contains utility functions for Micro Content Management System.
+ * @author Ádám L. Juhász
+ * @copyright GNU General Public License v3
+ * @version 2.0
+ * @date 2025, 2026
  */
 
 /**
@@ -20,7 +24,7 @@
  */
 function is_markdown_with_extension(string $file) {
     $ext = pathinfo($file, PATHINFO_EXTENSION);
-    return $ext == 'md' || $ext == 'markdown';
+    return in_array($ext, UCMS_MARKDOWN_EXTENSIONS);
 }
 
 /**
@@ -33,6 +37,6 @@ function get_file_with_markdown_extension(string $file) {
     if (is_markdown_with_extension($file)) {
         return $file;
     }
-    return $file . '.md';
+    return $file . '.' . UCMS_MARKDOWN_EXTENSIONS[0];
 }
 ?>

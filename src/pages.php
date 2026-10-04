@@ -10,7 +10,11 @@
  */
 /**
  * @file pages.php
- * Contains the page rendering functions for Micro Content Management System.
+ * @brief Contains the page rendering functions for Micro Content Management System.
+ * @author Ádám L. Juhász
+ * @copyright GNU General Public License v3
+ * @version 2.0
+ * @date 2025, 2026
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -38,26 +42,28 @@ function get_special_page(string $specialPage): string {
     global $phpversion;
 
     switch (strtoupper($specialPage)) {
-        case 'ABOUT':
+        case UCMS_SPECIAL_PAGE_ABOUT:
+            $ucms_years = UCMS_COPY_YEARS;
             return <<<ABOUT
             
                     <h1>Welcome to Micro Content Management System</h1>
                     <p>Micro Content Management System (µCMS) is a lightweight CMS software, which allow users to provide the content in Markdown files. The hierarchy of the pages are defined by the file hierarchy the markdown files are placed, and every page is queried with GET requests, thus eliminating the need to maintain a database on the host.</p>
                     <p>Originally I have created µCMS as a practice to learn PHP in the early 2000s, I have released it as a means to quickly create a CMS website, without much knowledge on building one. Although it is severely inadequate compared to other modern solution, this project remains only as an option to those, who wants to deepen their web server management skill, by introducing a tool that does not provide much help in maintaining the site for them, forcing their hands to a more hands-on experience, as technologically it is severely limited. That limitation is the reason it is called micro-CMS.</p>
-                    <p>Micro Content Management System Copyright &copy; 2025, 2026 Ádám Juhász</p>
+                    <p>Micro Content Management System Copyright &copy; $ucms_years Ádám Juhász</p>
                     <p>PHP Markdown Lib Copyright &copy; 2004&ndash;2015 Michel Fortin <a href="https://michelf.ca/">https://michelf.ca/</a> All rights reserved.<br/>
                     Based on Markdown Copyright &copy; 2003&ndash;2005 John Gruber <a href="https://daringfireball.net/">https://daringfireball.net/</a> All rights reserved.</p>
                     <p>PHP SmartyPants Lib, Copyright &copy; 2005&ndash;2016 Michel Fortin <a href="https://michelf.ca/">https://michelf.ca/</a> All rights reserved.<br/>
                     SmartyPants, Copyright &copy; 2003&ndash;2004 John Gruber <a href="https://daringfireball.net/">https://daringfireball.net/</a> All rights reserved.</p>
                 
             ABOUT;
-        case 'VERSION':
+        case UCMS_SPECIAL_PAGE_VERSION:
             $mdv = Markdown::MARKDOWNLIB_VERSION;
             $spv = SmartyPants::SMARTYPANTSLIB_VERSION;
+            $ucms_ver = UCMS_VERSION;
             return <<<VERSION
 
                         <h1>Micro Content Management System</h1>
-                        <p>Version 2.1.0</p>
+                        <p>Version $ucms_ver</p>
                         <p>Powered by:</p>
                         <ul id="versions">
                             <li>PHP {$phpversion()}</li>
@@ -75,17 +81,17 @@ function get_special_page(string $specialPage): string {
                         </ul>
 
                 VERSION;
-        case 'CONFIG':
+        case UCMS_SPECIAL_PAGE_CONFIG:
             global $TITLE, $DEFLANG, $COPYNOTE, $NAVPAGE, $ERRPAGE, $ORIGIN, $URL_PATH_BASE, $SITE_IMAGE;
             global $mdParser, $spParser;
             $title = $TITLE ?? '<em>Micro Content Management System</em>';
             $defLang = $DEFLANG ?? '<em>en</em>';
-            $docRoot = $DOCROOT ?? '/';
+            $copyNote = $COPYNOTE ?? '<em>blank</em>';
             $navPage = $NAVPAGE ?? '<em>auto populated</em>';
             $errPage = $ERRPAGE ?? '<em>internal</em>';
-            $origin = $ORIGIN ?? '<em>http://' . $_SERVER['HTTP_HOST'] . '</em>';
-            $urlBase = $URL_PATH_BASE ?? '<em>/index.php?</em>';
-            $siteImage = $SITE_IMAGE ?? '/images/ucms.png';
+            $origin = $ORIGIN ?? '<em>' . UCMS_FALLBACK_ORIGIN_SCHEME . $_SERVER['HTTP_HOST'] . '</em>';
+            $urlBase = $URL_PATH_BASE ?? '<em>' . UCMS_FALLBACK_URL_PATH_BASE . '</em>';
+            $siteImage = $SITE_IMAGE ?? UCMS_FALLBACK_SITE_IMAGE;
             $result = <<<CONFIG
 
                   <table>
@@ -106,7 +112,7 @@ function get_special_page(string $specialPage): string {
                     </tr>
                     <tr title="Before &micro;CMS copyright notice.">
                       <th>Copyright notice</th>
-                      <td>$COPYNOTE</td>
+                      <td>$copyNote</td>
                     </tr>
                     <tr>
                       <th>Navigation page</th>
@@ -213,10 +219,10 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
                 }
             }
         }
-        $origin = $ORIGIN ?? "http://" . $_SERVER['HTTP_HOST'];
-        $siteImg = $img ?? $SITE_IMAGE ?? '/images/ucms.png';
+        $origin = $ORIGIN ?? UCMS_FALLBACK_ORIGIN_SCHEME . $_SERVER['HTTP_HOST'];
+        $siteImg = $img ?? $SITE_IMAGE ?? UCMS_FALLBACK_SITE_IMAGE;
         if (!str_starts_with($siteImg, 'http')) $siteImg = $origin . $siteImg;
-        $urlPathBase = $URL_PATH_BASE ?? '/index.php?';
+        $urlPathBase = $URL_PATH_BASE ?? UCMS_FALLBACK_URL_PATH_BASE;
         $head = "<meta name=\"description\" content=\"$searchDesc\">";
         $head .= "\n    <meta property=\"og:type\" content=\"article\">";
         $head .= "\n    <meta property=\"og:image\" content=\"$siteImg\">";
@@ -234,7 +240,7 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
         $head .= "\n    <meta property=\"og:locale\" content=\"{$replacer('-', '_', $lang)}\">";
         $head .= "\n    <meta property=\"og:site_name\" content=\"{$siteTitle}\">";
         http_response_code(404);
-        $page = isset($ERRPAGE) ? get_file_with_markdown_extension($ERRPAGE) : 'err.md';
+        $page = isset($ERRPAGE) ? get_file_with_markdown_extension($ERRPAGE) : UCMS_FALLBACK_ERROR_PAGE;
         $localErrorPath = realpath($docRoot . '/' . $page);
         if ($localErrorPath !== false
          && str_starts_with($localErrorPath, $docRoot . '/')
@@ -268,7 +274,7 @@ function get_local_page(Markdown $mdParser, SmartyPants $spParser, string $docRo
 function get_page(Markdown $mdParser, SmartyPants $spParser, string $docRoot, string $page, string $lang, string &$head, ?string $siteTitle): string {
     global $replacer;
 
-    if (substr($page, 0, 1) == '*') {
+    if (substr($page, 0, strlen(UCMS_SPECIAL_PAGE_PREFIX)) == UCMS_SPECIAL_PAGE_PREFIX) {
         $head = '<meta property="og:type" content="website">';
         $head .= "\n    <meta property=\"og:locale\" content=\"{$replacer('-', '_', $lang)}\">";
         $head .= "\n    <meta property=\"og:site_name\" content=\"{$siteTitle}\">";

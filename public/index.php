@@ -13,11 +13,12 @@
  * @author Ádám Juhász
  * @copyright GNU General Public License v3
  * @version 2.0
- * @date 2025
+ * @date 2025, 2026
  */
 
 $_PAGE = $_SERVER['QUERY_STRING'] ?? '';
 
+include_once __DIR__ . '/../src/consts.php';
 include_once __DIR__ . '/../config/ucms.php';
 $_DOCROOT = realpath((isset($DOCROOT) && strlen($DOCROOT) > 0) ? __DIR__ . '/' . $DOCROOT : __DIR__);
 include_once __DIR__ . '/../src/langs.php';
@@ -39,7 +40,7 @@ $_HEAD = '';
 $_TITLE = $TITLE ?? 'Micro Content Management System?';
 $BODY = get_page($mdParser, $spParser, $_DOCROOT, $_PAGE, $LANG, $_HEAD, $_TITLE);
 $_COPYNOTE = isset($COPYNOTE) && strlen($COPYNOTE) > 0 ? '<p>' . $COPYNOTE . '</p>' : '';
-$_COPYNOTE .= '<p>Powered by µCMS &copy; 2025, 2026 Ádám Juhász</p>';
+$_COPYNOTE .= '<p>Powered by µCMS &copy; ' . UCMS_COPY_YEARS . ' Ádám Juhász</p>';
 $_PATH_BASE = $URL_PATH_BASE ?? '/index.php?';
 $NAV = build_nav_list($mdParser, $spParser, $_DOCROOT, $_PATH_BASE, $NAVPAGE ?? null, $LANG);
 

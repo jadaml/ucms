@@ -10,7 +10,11 @@
  */
 /**
  * @file navlist.php
- * Contains the navigation list building functions for Micro Content Management System.
+ * @brief Contains the navigation list building functions for Micro Content Management System.
+ * @author Ádám L. Juhász
+ * @copyright GNU General Public License v3
+ * @version 2.0
+ * @date 2025, 2026
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -43,7 +47,7 @@ function build_nav_list(Markdown $mdParser, SmartyPants $spParser, string $base_
     }
     $path = array();
     $result = '';
-    $p404 = isset($ERRPAGE) ? get_file_with_markdown_extension($ERRPAGE) : 'err.md';
+    $p404 = isset($ERRPAGE) ? get_file_with_markdown_extension($ERRPAGE) : UCMS_FALLBACK_ERROR_PAGE;
 
     do {
         if (($nextPath = array_pop($path)) !== null) {
