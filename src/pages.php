@@ -10,7 +10,7 @@
  */
 /**
  * @file pages.php
- * @brief Contains the page rendering functions for Micro Content Management System.
+ * Contains the page rendering functions for Micro Content Management System.
  * @author Ádám L. Juhász
  * @copyright GNU General Public License v3
  * @version 2.0
@@ -24,11 +24,15 @@ use Michelf\SmartyPants;
 include_once __DIR__ . '/../config/ucms.php';
 include_once __DIR__ . '/utils.php';
 
-$trimmer = "trim";
-$replacer = "str_replace";
-$dater = "gmdate";
-$phpversion = "phpversion";
+$trimmer = "trim";                                                              //!< Interpolated string reference for `trim` function.
+$replacer = "str_replace";                                                      //!< Interpolated string reference for `str_replace` function.
+$dater = "gmdate";                                                              //!< Interpolated string reference for `gmdate` function.
+$phpversion = "phpversion";                                                     //!< Interpolated string reference for `phpversion` function.
 
+/**
+ * Array filter function for non-null string values.
+ * @return bool `false` if the string length isn't 0, otherwise `false`.
+ */
 function strlen_not_null(string $value): bool {
     return strlen($value) != 0;
 }

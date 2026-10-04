@@ -10,7 +10,7 @@
  */
 /**
  * @file utils.php
- * @brief Contains utility functions for Micro Content Management System.
+ * Contains utility functions for Micro Content Management System.
  * @author Ádám L. Juhász
  * @copyright GNU General Public License v3
  * @version 2.0

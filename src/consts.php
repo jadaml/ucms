@@ -10,24 +10,39 @@
  */
 /**
  * @file consts.php
- * @brief Constant values used by the µCMS system.
+ * Constant values used by the µCMS system.
  * @author Ádám L. Juhász
  * @copyright GNU General Public License v3
  * @version 2.1
  * @date 2026
  */
-const UCMS_VER_MAJOR='2';                                                       //!< Major version component of µCMS
-const UCMS_VER_MINOR='1';                                                       //!< Minor version component of µCMS
-const UCMS_VER_PATCH='1';                                                       //!< Patch version component of µCMS
-const UCMS_VERSION= UCMS_VER_MAJOR . '.' . UCMS_VER_MINOR . '.' . UCMS_VER_PATCH; //!< Full version string of µCMS
-const UCMS_COPY_YEARS='2025, 2026';                                             //!< Copyright year of µCMS
-const UCMS_FALLBACK_ERROR_PAGE='err.md';                                        //!< Fall-back error page
-const UCMS_FALLBACK_SITE_IMAGE='/images/ucms.png';                              //!< Fall-back site image
-const UCMS_FALLBACK_URL_PATH_BASE='/index.php?';                                //!< Fall-back URL path base
-const UCMS_FALLBACK_ORIGIN_SCHEME='http://';                                    //!< Fall-back origin scheme
-const UCMS_MARKDOWN_EXTENSIONS=array('md', 'markdown');                         //!< Accepted markdown file extension list
-const UCMS_SPECIAL_PAGE_PREFIX='*';                                             //!< Special page prefix
-const UCMS_SPECIAL_PAGE_ABOUT='ABOUT';                                          //!< Special page 'about'
-const UCMS_SPECIAL_PAGE_VERSION='VERSION';                                      //!< Special page 'version'
-const UCMS_SPECIAL_PAGE_CONFIG='CONFIG';                                        //!< Special page 'config'
+
+/** Major version component of µCMS */
+const UCMS_VER_MAJOR='2';
+/** Minor version component of µCMS */
+const UCMS_VER_MINOR='1';
+/** Patch version component of µCMS */
+const UCMS_VER_PATCH='1';
+/** Full version string of µCMS */
+const UCMS_VERSION= UCMS_VER_MAJOR . '.' . UCMS_VER_MINOR . '.' . UCMS_VER_PATCH;
+/** Copyright year of µCMS */
+const UCMS_COPY_YEARS='2025, 2026';
+/** Fall-back error page */
+const UCMS_FALLBACK_ERROR_PAGE='err.md';
+/** Fall-back site image */
+const UCMS_FALLBACK_SITE_IMAGE='/images/ucms.png';
+/** Fall-back URL path base */
+const UCMS_FALLBACK_URL_PATH_BASE='/index.php?';
+/** Fall-back origin scheme */
+const UCMS_FALLBACK_ORIGIN_SCHEME='http://';
+/** Accepted markdown file extension list */
+const UCMS_MARKDOWN_EXTENSIONS=array('md', 'markdown');
+/** Special page prefix */
+const UCMS_SPECIAL_PAGE_PREFIX='*';
+/** Special page 'about' */
+const UCMS_SPECIAL_PAGE_ABOUT='ABOUT';
+/** Special page 'version' */
+const UCMS_SPECIAL_PAGE_VERSION='VERSION';
+/** Special page 'config' */
+const UCMS_SPECIAL_PAGE_CONFIG='CONFIG';
 ?>

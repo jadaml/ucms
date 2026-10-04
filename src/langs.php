@@ -11,8 +11,15 @@
 /**
  * @file langs.php
  * Contains the language handling functions for Micro Content Management System.
+ * @author Ádám L. Juhász
+ * @copyright GNU General Public License v3
+ * @version 2.0
+ * @date 2025, 2026
  */
-/** Represents a language from the Accept-Language header. */
+
+/**
+ * Represents a language from the Accept-Language header.
+ */
 class RequestLanguage {
     /** The country code of the language value. */
     private string $language;
@@ -97,7 +104,7 @@ function get_request_language(string $docRoot, ?string $page, ?string $defaultLa
     return $defaultLanguage ?? 'en';
 }
 
-$matches = array();
+$matches = array(); //!< The list of all possible languages found on the server.
 if (preg_match('/^([a-zA-Z]{2}(-[a-zA-Z]{2})?)\//', $_PAGE, $matches, PREG_UNMATCHED_AS_NULL) === 1)
 {
     $LANG = $matches[1];

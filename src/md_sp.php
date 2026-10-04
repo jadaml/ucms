@@ -11,6 +11,10 @@
 /**
  * @file md_sp.php
  * Contains logic for loading Markdown and SmartyPants configuration loading.
+ * @author Ádám L. Juhász
+ * @copyright GNU General Public License v3
+ * @version 2.0
+ * @date 2025, 2026
  */
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -18,7 +22,7 @@ use Michelf\MarkdownExtra;
 use Michelf\SmartyPantsTypographer;
 include_once __DIR__ . '/../config/ucms.php';
 
-$mdParser = new MarkdownExtra;
+$mdParser = new MarkdownExtra; //!< Markdown parser instance.
 if (isset($TAB_WIDTH)               && is_int($TAB_WIDTH))                    $mdParser->tab_width               = $TAB_WIDTH;
 if (isset($HARD_WRAP)               && is_bool($HARD_WRAP))                   $mdParser->hard_wrap               = $HARD_WRAP;
 if (isset($NO_MARKUP)               && is_bool($NO_MARKUP))                   $mdParser->no_markup               = $NO_MARKUP;
@@ -40,7 +44,7 @@ if (isset($TABLE_ALIGN_CLASS_TMPL)  && is_string($TABLE_ALIGN_CLASS_TMPL))    $m
 if (isset($PREDEF_ABBR)             && is_array($PREDEF_ABBR))                $mdParser->predef_abbr             = $PREDEF_ABBR;
 if (isset($HASHTAG_PROTECTION)      && is_bool($HASHTAG_PROTECTION))          $mdParser->hashtag_protection      = $HASHTAG_PROTECTION;
 
-$spParser = new SmartyPantsTypographer;
+$spParser = new SmartyPantsTypographer; //!< Smarty Pants Typographer instance.
 if(isset($TAGS_TO_SKIP)               && is_string($TAGS_TO_SKIP))               $spParser->tags_to_skip               = $TAGS_TO_SKIP;
 if(isset($DO_NOTHING)                 && is_bool($DO_NOTHING))                   $spParser->do_nothing                 = $DO_NOTHING;
 if(isset($DO_QUOTES)                  && is_int($DO_QUOTES))                     $spParser->do_quotes                  = $DO_QUOTES;

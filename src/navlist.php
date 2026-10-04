@@ -10,7 +10,7 @@
  */
 /**
  * @file navlist.php
- * @brief Contains the navigation list building functions for Micro Content Management System.
+ * Contains the navigation list building functions for Micro Content Management System.
  * @author Ádám L. Juhász
  * @copyright GNU General Public License v3
  * @version 2.0

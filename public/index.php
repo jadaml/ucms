@@ -9,24 +9,24 @@
  * You should have received a copy of the GNU General Public License along with Micro Content Management System. If not, see <https://www.gnu.org/licenses/>. 
  */
 /**@file index.php
- * @brief This file is the main entry point of the application.
+ * This file is the main entry point of the application.
  * @author Ádám Juhász
  * @copyright GNU General Public License v3
  * @version 2.0
  * @date 2025, 2026
  */
 
-$_PAGE = $_SERVER['QUERY_STRING'] ?? '';
+$_PAGE = $_SERVER['QUERY_STRING'] ?? ''; //!< Working instance of visited page.
 
 include_once __DIR__ . '/../src/consts.php';
 include_once __DIR__ . '/../config/ucms.php';
-$_DOCROOT = realpath((isset($DOCROOT) && strlen($DOCROOT) > 0) ? __DIR__ . '/' . $DOCROOT : __DIR__);
+$_DOCROOT = realpath((isset($DOCROOT) && strlen($DOCROOT) > 0) ? __DIR__ . '/' . $DOCROOT : __DIR__); //!< Working instance of local document root. *Sensitive!*
 include_once __DIR__ . '/../src/langs.php';
 include_once __DIR__ . '/../src/md_sp.php';
 include_once __DIR__ . '/../src/navlist.php';
 include_once __DIR__ . '/../src/pages.php';
 
-$template = file_get_contents(__DIR__ . '/../resources/template.html');
+$template = file_get_contents(__DIR__ . '/../resources/template.html'); //!< HTML template.
 
 if ($template === false) {
     $template = '<!DOCTYPE html><html lang="%LANG%"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>%TITLE%</title><!--%HEAD%---></head><body><p><strong>ERROR</strong> template.html could not be read.</p><header>%HEADER%</header><nav>%NAV%</nav><article>%BODY%</article><footer>%FOOTER%</footer></body></html>';
@@ -36,16 +36,17 @@ if (strlen($_PAGE) == 0) {
     $_PAGE = $MAINPAGE ?? 'main';
 }
 
-$_HEAD = '';
-$_TITLE = $TITLE ?? 'Micro Content Management System?';
-$BODY = get_page($mdParser, $spParser, $_DOCROOT, $_PAGE, $LANG, $_HEAD, $_TITLE);
-$_COPYNOTE = isset($COPYNOTE) && strlen($COPYNOTE) > 0 ? '<p>' . $COPYNOTE . '</p>' : '';
+; // Doxygen misunderstands the code, and assumes that the two condition before is part of the $_HEAD declaration.
+$_HEAD = ''; //!< Working instance of heading.
+$_TITLE = $TITLE ?? 'Micro Content Management System?'; //!< Working instance of title-
+$BODY = get_page($mdParser, $spParser, $_DOCROOT, $_PAGE, $LANG, $_HEAD, $_TITLE); //!< Reconstructed HTML body of page.
+$_COPYNOTE = isset($COPYNOTE) && strlen($COPYNOTE) > 0 ? '<p>' . $COPYNOTE . '</p>' : ''; //!< Working instance of copyright notice.
 $_COPYNOTE .= '<p>Powered by µCMS &copy; ' . UCMS_COPY_YEARS . ' Ádám Juhász</p>';
-$_PATH_BASE = $URL_PATH_BASE ?? '/index.php?';
-$NAV = build_nav_list($mdParser, $spParser, $_DOCROOT, $_PATH_BASE, $NAVPAGE ?? null, $LANG);
+$_PATH_BASE = $URL_PATH_BASE ?? '/index.php?'; //!< Working instance of URL path.
+$NAV = build_nav_list($mdParser, $spParser, $_DOCROOT, $_PATH_BASE, $NAVPAGE ?? null, $LANG); //!< Reconstructed HTML navigation bar.
 
-$needles = array('%LANG%', '<!--%HEAD%-->', '%TITLE%', '%HEADER%', '%NAV%', '%BODY%', '%FOOTER%');
-$values = array($LANG, $_HEAD, $_TITLE, '<p class="align-left">' . $_TITLE . '</p>', $NAV, $BODY, $_COPYNOTE);
+$needles = array('%LANG%', '<!--%HEAD%-->', '%TITLE%', '%HEADER%', '%NAV%', '%BODY%', '%FOOTER%'); //!< List of template tags to inject HTML in to.
+$values = array($LANG, $_HEAD, $_TITLE, '<p class="align-left">' . $_TITLE . '</p>', $NAV, $BODY, $_COPYNOTE); //!< List of HTML listing to inject in to the template.
 
 echo str_replace($needles, $values, $template);
 exit;
